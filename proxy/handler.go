@@ -52,6 +52,24 @@ type handler struct {
 	director StreamDirector
 }
 
+type fullMethodNameKey struct{}
+
+func SetFullMethodName(ctx context.Context, fullMethodName string) context.Context {
+	return context.WithValue(ctx, fullMethodNameKey{}, fullMethodName)
+}
+
+func FullMethodNameFromContext(ctx context.Context) string {
+	return ctx.Value(fullMethodNameKey{}).(string)
+}
+
+func getFullMethodName(ctx context.Context, fallback string) string {
+	value := FullMethodNameFromContext(ctx)
+	if value != "" {
+		return value
+	}
+	return fallback
+}
+
 // handler is where the real magic of proxying happens.
 // It is invoked like any gRPC server stream and uses the emptypb.Empty type server
 // to proxy calls between the input and output streams.
@@ -63,6 +81,7 @@ func (s *handler) handler(srv interface{}, serverStream grpc.ServerStream) error
 	}
 	// We require that the director's returned context inherits from the serverStream.Context().
 	outgoingCtx, backendConn, err := s.director(serverStream.Context(), fullMethodName)
+	fullMethodName = getFullMethodName(outgoingCtx, fullMethodName)
 	if err != nil {
 		return err
 	}
