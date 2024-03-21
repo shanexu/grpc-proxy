@@ -59,7 +59,8 @@ func SetFullMethodName(ctx context.Context, fullMethodName string) context.Conte
 }
 
 func FullMethodNameFromContext(ctx context.Context) string {
-	return ctx.Value(fullMethodNameKey{}).(string)
+	value, _ := ctx.Value(fullMethodNameKey{}).(string)
+	return value
 }
 
 func getFullMethodName(ctx context.Context, fallback string) string {
