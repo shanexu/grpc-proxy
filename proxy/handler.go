@@ -132,8 +132,8 @@ func (s *handler) handler(srv interface{}, serverStream grpc.ServerStream) error
 func (s *handler) forwardClientToServer(src grpc.ClientStream, dst grpc.ServerStream) chan error {
 	ret := make(chan error, 1)
 	go func() {
-		f := &emptypb.Empty{}
 		for i := 0; ; i++ {
+			f := &emptypb.Empty{}
 			if err := src.RecvMsg(f); err != nil {
 				ret <- err // this can be io.EOF which is happy case
 				break
@@ -164,8 +164,8 @@ func (s *handler) forwardClientToServer(src grpc.ClientStream, dst grpc.ServerSt
 func (s *handler) forwardServerToClient(src grpc.ServerStream, dst grpc.ClientStream) chan error {
 	ret := make(chan error, 1)
 	go func() {
-		f := &emptypb.Empty{}
 		for i := 0; ; i++ {
+			f := &emptypb.Empty{}
 			if err := src.RecvMsg(f); err != nil {
 				ret <- err // this can be io.EOF which is happy case
 				break
