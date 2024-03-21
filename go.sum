@@ -11,6 +11,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/shanexu/grpc-go v1.62.2-0.20240321105830-2c1b1d0c0c70 h1:Bab6Mhs18koO7RaM+VyPaFQ4JMmiq5A1KmC9TC2KhCY=
 github.com/shanexu/grpc-go v1.62.2-0.20240321105830-2c1b1d0c0c70/go.mod h1:IWTG0VlJLCh1SkC58F7np9ka9mx/WNkjl4PGJaiq+QE=
+github.com/shanexu/grpc-go v1.62.2-0.20240321113135-a2353fed94f4 h1:UuVR1nCJFAtfesM3mlKxvoet1CQ0H6yk6BsTWwDJ3Hc=
+github.com/shanexu/grpc-go v1.62.2-0.20240321113135-a2353fed94f4/go.mod h1:IWTG0VlJLCh1SkC58F7np9ka9mx/WNkjl4PGJaiq+QE=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
