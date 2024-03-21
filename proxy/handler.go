@@ -10,7 +10,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 var (
@@ -133,28 +132,28 @@ func (s *handler) forwardClientToServer(src grpc.ClientStream, dst grpc.ServerSt
 	ret := make(chan error, 1)
 	go func() {
 		for i := 0; ; i++ {
-			f := &emptypb.Empty{}
-			if err := src.RecvMsg(f); err != nil {
+			if buf, err := src.RecvRaw(); err != nil {
 				ret <- err // this can be io.EOF which is happy case
 				break
-			}
-			if i == 0 {
-				// This is a bit of a hack, but client to server headers are only readable after first client msg is
-				// received but must be written to server stream before the first msg is flushed.
-				// This is the only place to do it nicely.
-				md, err := src.Header()
-				if err != nil {
+			} else {
+				if i == 0 {
+					// This is a bit of a hack, but client to server headers are only readable after first client msg is
+					// received but must be written to server stream before the first msg is flushed.
+					// This is the only place to do it nicely.
+					md, err := src.Header()
+					if err != nil {
+						ret <- err
+						break
+					}
+					if err := dst.SendHeader(md); err != nil {
+						ret <- err
+						break
+					}
+				}
+				if err := dst.SendRaw(buf); err != nil {
 					ret <- err
 					break
 				}
-				if err := dst.SendHeader(md); err != nil {
-					ret <- err
-					break
-				}
-			}
-			if err := dst.SendMsg(f); err != nil {
-				ret <- err
-				break
 			}
 		}
 	}()
@@ -165,14 +164,14 @@ func (s *handler) forwardServerToClient(src grpc.ServerStream, dst grpc.ClientSt
 	ret := make(chan error, 1)
 	go func() {
 		for i := 0; ; i++ {
-			f := &emptypb.Empty{}
-			if err := src.RecvMsg(f); err != nil {
+			if buf, err := src.RecvRaw(); err != nil {
 				ret <- err // this can be io.EOF which is happy case
 				break
-			}
-			if err := dst.SendMsg(f); err != nil {
-				ret <- err
-				break
+			} else {
+				if err := dst.SendRaw(buf); err != nil {
+					ret <- err
+					break
+				}
 			}
 		}
 	}()

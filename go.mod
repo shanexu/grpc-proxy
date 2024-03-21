@@ -23,3 +23,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace google.golang.org/grpc => github.com/shanexu/grpc-go v1.62.2-0.20240321105830-2c1b1d0c0c70
