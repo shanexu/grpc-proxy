@@ -82,10 +82,10 @@ func (s *handler) handler(srv interface{}, serverStream grpc.ServerStream) error
 	}
 	// We require that the director's returned context inherits from the serverStream.Context().
 	outgoingCtx, backendConn, err := s.director(serverStream.Context(), fullMethodName)
-	fullMethodName = getFullMethodName(outgoingCtx, fullMethodName)
 	if err != nil {
 		return err
 	}
+	fullMethodName = getFullMethodName(outgoingCtx, fullMethodName)
 
 	clientCtx, clientCancel := context.WithCancel(outgoingCtx)
 	defer clientCancel()
